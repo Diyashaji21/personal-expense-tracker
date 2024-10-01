@@ -10,4 +10,4 @@ google-generativeai
 matplotlib
 reportlab
 gunicorn
-email-validate
+email_validator==2.2.0
