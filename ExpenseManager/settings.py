@@ -143,7 +143,13 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = '/home/'  # Adjust this to the correct home URL
 
+STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # Ensure this path is correct
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
 # Jazzmin settings for customizing Django Admin interface
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
