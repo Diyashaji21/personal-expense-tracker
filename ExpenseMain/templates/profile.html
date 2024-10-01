@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center">User Profile</h2>
+    <form action="{% url 'profile_settings' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <!-- Profile Picture Upload -->
+                <label for="profile_picture">Profile Picture</label>
+                <div class="profile-img">
+                    <img src="{{ userDetails.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" width="150" height="150">
+                </div>
+                <input type="file" class="form-control mt-3" name="profile_picture" id="profile_picture">
+            </div>
+            <div class="col-md-8">
+                <!-- User Details -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" value="{{ userDetails.username }}" class="form-control" name="username" id="username" required>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="email">Email</label>
+                    <input type="email" value="{{ userDetails.email }}" class="form-control" name="email" disabled>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="expenses">Monthly Expenses</label>
+                    <input type="number" value="{{ userDetails.expenses }}" class="form-control" name="expenses" required>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="savings">Balance Savings</label>
+                    <input type="number" value="{{ userDetails.savings }}" class="form-control" name="savings" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-4 text-center">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

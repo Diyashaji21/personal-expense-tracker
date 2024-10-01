@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link rel="icon" href="{% static './user_base/assets/img/budget.png' %}" type="icon/icon type">
+  <title>ExpenseManager</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static './user_base/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static './user_base/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static './user_base/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static './user_base/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static './user_base/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static './user_base/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'user_base/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js'></script>
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'user_base/assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/home" class="logo d-flex align-items-center">
+        <img src="{% static 'assets/img/logo.png' %}" alt="">
+        <span class="d-none d-lg-block">
+          <span><img src="{% static './user_base/assets/img/budget.png' %}"></span>ExpenseManager
+        </span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <!-- Search Bar -->
+    <form class="d-flex" role="search" style="margin-right: 20px;">
+      <input id="sidebarSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="button">Search</button>
+    </form>
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+          {% if user_name %}
+          Welcome, <b>{{ user_name }}</b>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar bg-dark">
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link" href="/home">
+          <i class="bi bi-house-door"></i>
+          <span>Home</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/income">
+          <i class="bi bi-arrow-left-circle"></i>
+          <span>My Income</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/expense">
+          <i class="bi bi-arrow-right-circle"></i>
+          <span>My Expense</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="visualization/combined_pie/">
+          <i class="bi bi-graph-up-arrow"></i>
+          <span>Income and Expense Summary</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/account_settings">
+          <i class="bi bi-database-fill-gear"></i>
+          <span>Currency Settings</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/profile_settings">
+          <i class="bi bi-person-fill-gear"></i>
+          <span>Profile Settings</span>
+        </a>
+      </li>
+
+      <a href="https://personal-expense-model-8vbmhzyec9dkbchwhsduvf.streamlit.app/" target="_blank">
+        <button style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Savings Predictor
+        </button>
+      </a>
+      
+      
+
+      <li class="nav-item">
+        <a class="nav-link" href="expense-suggestions/">
+          <i class="bi bi-chat-dots"></i>
+          <span>Chatbot</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">
+          <i class="bi bi-box-arrow-left"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+
+    </ul>
+  </aside><!-- End Sidebar -->
+
+  <main id="main" class="main">
+    {% block body %}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js'></script>
+
+    <div class="row">
+      <div class="col-9" style="font-weight:bold; font-size:30px">
+        Expense Calendar
+      </div>
+      <div class="col-3 text-right mb-3">
+        <button type="button" id="incomes" class="btn btn-warning">Incomes</button>
+        <button type="button" id="expenses" class="btn btn-warning">Expenses</button>
+      </div>
+    </div>
+    <div id='calendar'></div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'multiMonthYear',
+              events: [],
+              headerToolbar: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },
+              dayMaxEvents: 2,
+              eventClick: function(info) {
+                  alert('Event: ' + info.event.title);
+                  info.el.style.borderColor = 'red'; // Change border color for fun
+              }
+          });
+          calendar.render();
+          
+          const incomeView = document.querySelector('#incomes');
+          incomeView.addEventListener('click', function() {
+              calendar.setOption('events', '{% url "incomeCalendarView" %}');
+              calendar.setOption('eventBackgroundColor', '#166bf5');
+              calendar.setOption('eventTextColor', '#f7f9fc');       
+          }); 
+
+          const expenseView = document.querySelector('#expenses');
+          expenseView.addEventListener('click', function() {
+              calendar.setOption('events', '{% url "expenseCalendarView" %}');
+              calendar.setOption('eventBackgroundColor', '#166bf5');
+              calendar.setOption('eventTextColor', '#f7f9fc');     
+          }); 
+      });
+    </script>
+    {% endblock %}
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static './user_base/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static './user_base/assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
+
+  <!-- Custom JS for Search Functionality -->
+  <script>
+    document.getElementById('sidebarSearch').addEventListener('input', function() {
+      let filter = this.value.toLowerCase();
+      let items = document.querySelectorAll('#sidebar-nav .nav-item');
+
+      items.forEach(function(item) {
+        let text = item.textContent || item.innerText;
+        if (text.toLowerCase().indexOf(filter) > -1) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

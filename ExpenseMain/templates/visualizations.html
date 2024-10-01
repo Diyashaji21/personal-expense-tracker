@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Visualizations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #007bff;
+        }
+        .chart {
+            margin-bottom: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Visualizations</h1>
+
+        <div class="chart">
+            <h2>Monthly Expense Trend</h2>
+            <div>{{ monthly_expenses_chart|safe }}</div>
+        </div>
+
+        <div class="chart">
+            <h2>Expense Distribution by Category</h2>
+            <div>{{ expense_distribution_chart|safe }}</div>
+        </div>
+
+        {% comment %} <div class="chart">
+            <h2>Income vs. Expenses Over Time</h2>
+            <div>{{ income_vs_expenses_chart|safe }}</div>
+        </div> {% endcomment %}
+
+        <div class="chart">
+            <h2>User Spending Patterns</h2>
+            <div>{{ user_spending_chart|safe }}</div>
+        </div>
+
+        <div class="chart">
+            <h2>Expense vs. Income Ratio</h2>
+            <div>{{ expense_income_ratio_chart|safe }}</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row mb-5 mt-4">
+        <div class="col text-center">
+            <h1 class="display-4" style="font-weight: bold;">Welcome to ExpenseManager</h1>
+            <p class="lead">Track your finances effortlessly</p>
+        </div>
+    </div>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-4 offset-md-2">
+            <div class="card shadow" style="background-color: #ffcc80; height: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">Total Income</h5>
+                    <p class="card-text">₹{{ total_income }}</p>
+                    <a href="/income" class="btn btn-outline-dark">View Income</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow" style="background-color: #80cbc4; height: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expenses</h5>
+                    <p class="card-text">₹{{ total_expenses }}</p>
+                    <a href="/expense" class="btn btn-outline-dark">View Expenses</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row text-center mb-4">
+        <div class="col-md-4">
+            <div class="card shadow" style="background-color: #81d4fa; height: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">Income & Expense Summary</h5>
+                    <a href="/visualization/combined_pie/" class="btn btn-outline-dark">View Summary</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow" style="background-color: #ff8a65; height: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">Currency Settings</h5>
+                    <a href="/account_settings" class="btn btn-outline-dark">Manage Settings</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow" style="background-color: #b39ddb; height: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">Chatbot</h5>
+                    <a href="expense-suggestions/" class="btn btn-outline-dark">Chat Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Expense Calendar Section -->
+    <div class="row mt-5 mb-4">
+        <div class="col-12">
+            <h2 class="text-center">Expense Calendar</h2>
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <!-- Display selected date's expenses and savings -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="text-center">Expenses and Savings for <span id="selected-date"></span></h3>
+            <p class="text-center" id="daily-expenses">Expenses: ₹0</p>
+            <p class="text-center" id="daily-savings">Savings: ₹0</p>
+        </div>
+    </div>
+</div>
+
+<!-- FullCalendar Styles and Scripts -->
+<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css' rel='stylesheet' />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js'></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'multiMonthYear',  // Multi-month grid view
+            duration: { months: 3 },  // Display 3 months at a time
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,multiMonthYear'
+            },
+            events: function(fetchInfo, successCallback, failureCallback) {
+                var incomeEvents = [];
+                var expenseEvents = [];
+
+                // Fetch income and expense events
+                fetch('/income_calendar_view/')
+                    .then(response => response.json())
+                    .then(data => {
+                        incomeEvents = data;  
+                        return fetch('/expense_calendar_view/'); 
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        expenseEvents = data;
+                        const combinedEvents = [...incomeEvents, ...expenseEvents];
+                        successCallback(combinedEvents); 
+                    })
+                    .catch(error => {
+                        console.error('Error fetching events:', error);
+                        failureCallback(error);
+                    });
+            },
+            dateClick: function(info) {
+                var selectedDate = info.dateStr;
+                document.getElementById('selected-date').textContent = selectedDate;
+
+                // Fetch expenses and savings for the selected date
+                fetch(`/fetch_expenses_savings/${selectedDate}/`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('daily-expenses').textContent = `Expenses: ₹${data.total_expenses}`;
+        document.getElementById('daily-savings').textContent = `Savings: ₹${data.savings}`;
+    })
+    .catch(error => {
+        console.error('Error fetching data for selected date:', error);
+    });
+            }
+        });
+
+        calendar.render();
+    });
+</script>
+
+{% endblock body %}

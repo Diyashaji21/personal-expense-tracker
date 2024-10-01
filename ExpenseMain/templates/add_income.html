@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container mt-4">
+          <div class="row">
+           <div class="col-md-12">
+                    <h3><b>Add Income</b></h3>
+           </div>
+           <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item breadcrumb-lg"><a href="income">My Incomes</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Incomes</li>
+            </ol>
+          </nav>
+          </div>          
+ </div>
+ <div class="row pt-4">
+          <form action='{% url 'addIncome'%}' method='post'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                              <label for="amount">Amount</label>
+                              <input type="number" min=0 required class="form-control" name="amount">
+                    </div>
+                    <div class="form-group">
+                              <label for="description">Category</label>
+                              <input type="text" required class="form-control" name="description">
+                    </div>
+                    <div class="form-group">
+                              <label for="category">Description</label>
+                              <input type="text" required class="form-control" name="category">
+                    </div>
+                    <div class="form-group">
+                              <label for="date_of_income">Date of Income</label>
+                              <input type="date" id="date_of_income" class="form-control date_of_income" max="" required name="date_of_income">
+                    </div>
+                    <div class="pt-4">
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+          </form>
+
+          <script>
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("date_of_income").setAttribute("max", today);
+          </script>
+
+
+          {% comment %} <div class="card">
+                    <div class="card-body">
+                    <form action='' method="post">
+                              <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <input type="text" class="form-control-sm" name="amount">
+                              </div>
+                              <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <input type="text" class="form-control-sm" name="description">
+                              </div>
+                              <div class="form-group">
+                                        <label for="">Category</label>
+                                        <select name="category">
+                                                  <option name="category">1</option>
+                                                  <option name="category">1</option>
+                                                  <option name="category">1</option>
+
+                                        </select>
+
+                              </div>
+                              <div class="form-group">
+                                        <label for="date_of_expense">Date of Expense</label>
+                                        <input type="date" class="form-control-sm" name="date_of_expense">
+                              </div>
+                              <input type="submit" value="Submit" class="btn btn-primary-sm">
+          </form>
+
+          </div> {% endcomment %}
+ </div>
+{% endblock body %}
+

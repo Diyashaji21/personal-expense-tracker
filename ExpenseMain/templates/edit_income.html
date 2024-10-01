@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container mt-4">
+          <div class="row">
+           <div class="col-md-12">
+                    <h3><b>Edit Income</b></h3>
+           </div>
+           <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item breadcrumb-lg"><a href="{%url 'income'%}">My Incomes</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Edit Incomes</li>
+                    </ol>
+          </nav>
+          </div>          
+ </div>
+ <div class="row pt-4">
+          <form action='{% url 'editIncome' income.id %}' method='post'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                              <label for="amount">Amount</label>
+                              <input type="number" value="{{income.amount}}" min=0 required class="form-control" name="amount">
+                    </div>
+                    <div class="form-group">
+                              <label for="description">Description</label>
+                              <input type="text" required class="form-control" value="{{income.description}}" name="description">
+                    </div>
+                    <div class="form-group">
+                              <label for="category">Source</label>
+                              <input type="text" required class="form-control" value="{{income.source}}" name="category">
+                              
+
+                    </div>
+                    <div class="form-group">
+                              <label for="date_of_expense">Date of Income</label>
+                              <input type="date" class="form-control" id="date_of_income" max='' value="{{income.date| date:'Y-m-d'}}" required name="date_of_expense">
+                    </div>
+                    <div class="pt-4">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+          </form>
+          <script>
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("date_of_income").setAttribute("max", today);
+          </script>
+ </div>
+{% endblock body %}
+

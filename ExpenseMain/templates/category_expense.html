@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category-wise Expenses</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Category-wise Expenses</h2>
+    <canvas id="expenseChart" width="400" height="200"></canvas>
+
+    <script>
+        var ctx = document.getElementById('expenseChart').getContext('2d');
+        var expenseChart = new Chart(ctx, {
+            type: 'bar',  // Use 'pie' or 'bar' depending on the type of chart
+            data: {
+                labels: [
+                    {% for expense in expenses_by_category %}
+                        "{{ expense.category }}",
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Total Expenses by Category',
+                    data: [
+                        {% for expense in expenses_by_category %}
+                            {{ expense.total_amount }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

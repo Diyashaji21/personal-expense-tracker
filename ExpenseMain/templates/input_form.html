@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Suggestions</title>
+</head>
+<body>
+    <h1>Get Expense Suggestions</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Income Field -->
+        <label for="income">Income:</label><br>
+        <input type="number" id="income" name="income" step="0.01" required><br><br>
+
+        <!-- Expense Field -->
+        <label for="expense">Expense:</label><br>
+        <input type="number" id="expense" name="expense" step="0.01" required><br><br>
+
+        <!-- Date Field -->
+        <label for="date">Date:</label><br>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <!-- Category Field -->
+        <label for="category">Category:</label><br>
+        <input type="text" id="category" name="category" required><br><br>
+
+        <!-- Location Field -->
+        <label for="location">Location:</label><br>
+        <input type="text" id="location" name="location" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

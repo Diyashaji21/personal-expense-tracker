@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="row mb-4 mt-4">
+        <div class="col text-center">
+            <h2 class="font-weight-bold">Expense Calendar</h2>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col-9">
+            <h4>Track your income and expenses</h4>
+        </div>
+        <div class="col-3 text-right">
+            <button type="button" id="incomes" class="btn btn-primary">Incomes</button>
+            <button type="button" id="expenses" class="btn btn-danger">Expenses</button>
+        </div>
+    </div>
+
+    <div id='calendar'></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'multiMonthYear',
+                events: [],
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                dayMaxEvents: 2,
+                eventClick: function(info) {
+                    alert('Event: ' + info.event.title);
+                    info.el.style.borderColor = 'red';
+                }
+            });
+            calendar.render();
+
+            const incomeView = document.querySelector('#incomes');
+            incomeView.addEventListener('click', function() {
+                calendar.setOption('events', '{% url "incomeCalendarView" %}');
+                calendar.setOption('eventBackgroundColor', '#166bf5');
+                calendar.setOption('eventTextColor', '#f7f9fc');
+            });
+
+            const expenseView = document.querySelector('#expenses');
+            expenseView.addEventListener('click', function() {
+                calendar.setOption('events', '{% url "expenseCalendarView" %}');
+                calendar.setOption('eventBackgroundColor', '#f54242');
+                calendar.setOption('eventTextColor', '#fff');
+            });
+        });
+    </script>
+</div>
+{% endblock body %}
