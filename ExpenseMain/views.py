@@ -1596,8 +1596,7 @@ import base64
 from django.shortcuts import render
 from .models import Expense, Income
 
-import plotly.graph_objects as go
-import plotly.express as px
+
 from django.shortcuts import render
 from django.db.models import Sum
 
