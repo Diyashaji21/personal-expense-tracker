@@ -27,9 +27,7 @@ SECRET_KEY = 'django-insecure-y#-ka7)%*#vj&o7bpy=kwx5r)o07b9el6z%4+lv5x^!0xx_)v^
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Ensure this path is correct
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Optional, if you have other static directories
+ # Optional, if you have other static directories
 
 
 
@@ -122,11 +120,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ExpenseMain/static')]
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Media files
