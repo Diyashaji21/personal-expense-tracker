@@ -11,4 +11,5 @@ matplotlib
 reportlab
 gunicorn
 email_validator==2.2.0
-jazzmin
+django-jazzmin
+
