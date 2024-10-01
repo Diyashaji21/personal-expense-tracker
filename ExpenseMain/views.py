@@ -13,7 +13,7 @@ from django.http import JsonResponse,HttpResponse
 import csv
 import datetime
 import xlwt
-from validate_email import validate_email
+
 from django.views.decorators.cache import cache_control
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
@@ -673,7 +673,7 @@ from django.http import JsonResponse,HttpResponse
 import csv
 import datetime
 import xlwt
-from validate_email import validate_email
+
 from django.views.decorators.cache import cache_control
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
@@ -1596,8 +1596,7 @@ import base64
 from django.shortcuts import render
 from .models import Expense, Income
 
-import plotly.graph_objects as go
-import plotly.express as px
+
 from django.shortcuts import render
 from django.db.models import Sum
 
